@@ -15,10 +15,28 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
+from django.contrib.auth import views as auth_views
+
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin', admin.site.urls),
     path('master/', views.Master, name='master'),
-    path('', views.Index, name='index')
-]
+    path('', views.Index, name='index'),
+    path('signup' , views.signup , name= 'signup'),
+    path('accounts/' , include('django.contrib.auth.urls')),
+    path('logout/', views.custom_logout, name='logout'),
+    
+    #add to cart
+    path('cart/add/<int:id>/' , views.cart_add , name= 'cart_add'),
+    path('cart/item_clear/<int:id>/' , views.item_clear , name= 'item_clear'),
+    path('cart/item_increment/<int:id>/' , views.item_increment , name= 'item_increment'),
+    path('cart/item_decrement/<int:id>/' , views.item_decrement , name= 'item_decrement'),
+    path('cart/cart_clear/' , views.cart_clear , name= 'cart_clear'),
+    path('cart/cart_detail/' , views.car_detail , name= 'cart_detail'),
+    
+
+] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)
